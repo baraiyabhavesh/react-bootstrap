@@ -7,8 +7,11 @@ import ContentType from "@/utils/ContentType";
 import { Col, Container, Row } from "react-bootstrap";
 import SideBar from "@/components/Sidebar";
 import Breadcrumb from "@/components/Breadcrumb";
-import dynamic from "next/dynamic";
-const HolyLoader = dynamic(() => import("holy-loader"), { ssr: false });
+import nextDynamic from "next/dynamic";
+const HolyLoader = nextDynamic(() => import("holy-loader"), { ssr: false });
+
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   let pageRoutes = [];
@@ -73,15 +76,15 @@ const getAllData = async (params, searchParams) => {
   if (string.includes("?search_query")) {
     string = "";
   }
-  pageData = await getAPIData(
-    `${locale === defaultLocale ? "" : `${locale}/`}${
-      paramSlug
-        ? searchParams && Object.keys(searchParams).length
-          ? paramSlug + string.slice(0, -1)
-          : paramSlug
-        : ""
-    }`
-  );
+  const apiPath = `${locale === defaultLocale ? "" : `${locale}/`}${
+    paramSlug
+      ? searchParams && Object.keys(searchParams).length
+        ? paramSlug + string.slice(0, -1)
+        : paramSlug
+      : ""
+  }`;
+  
+  pageData = await getAPIData(apiPath);
   if (isEnabled) {
     pageData = await getAPIData(
       `${locale === defaultLocale ? "" : `${locale}/`}${
@@ -93,20 +96,30 @@ const getAllData = async (params, searchParams) => {
       }`
     );
   }
-  if (!pageData.error && pageData.data === 404) {
+  if (pageData && !pageData.error && pageData.data === 404) {
     notFound();
   }
+  
   return {
     pageData,
   };
 };
 
 export default async function Page({ params, searchParams }) {
-  const { pageData } = await getAllData(params, searchParams);
+  const { pageData } = await getAllData(params, searchParams);  
+  if (!pageData) {
+    return <div>Page not found or data unavailable</div>;
+  }
+  if (pageData.error) {
+    return <div>Page not found or data unavailable (API Error)</div>;
+  }
+  
+  if (!pageData.data || (typeof pageData.data === 'object' && Object.keys(pageData.data).length === 0)) {
+    return <div>Page not found or data unavailable (No Data)</div>;
+  }
   
   const nsBaseTheme = pageData?.data?.page?.constants?.ns_basetheme;
-  const websiteType = nsBaseTheme?.websiteType?.value || "normal";
-  const onePageNav = nsBaseTheme?.onepage_menu?.slug || [];
+  const websiteType = nsBaseTheme?.websiteType?.value || "normal";  
   const currentPageBreadcrumbStyle = pageData?.data?.page?.breadcrumbStyle;
   const currentHeaderLayout = pageData?.data?.page?.headerLayout;
   const layoutType = pageData?.data?.appearance?.backendLayout || pageData?.data?.page?.appearance?.backendLayout || "default";
