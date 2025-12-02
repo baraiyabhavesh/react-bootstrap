@@ -1,0 +1,108 @@
+/****************************************************************************
+ * Content Section
+ ***************************************************************************/
+.content-section {
+  position: relative;
+  display: block;
+  // padding: 0;
+  img {
+    margin-bottom: 15px;
+
+    &.image-embed-item {
+      margin-bottom: 0;
+    }
+  }
+
+  h2 {
+    margin-bottom: 30px;
+  }
+
+  h4 {
+    margin-bottom: 20px;
+  }
+
+  &.section-with-bgimg {
+    .headlind-block {
+      h2 {
+        color: $brand-color;
+      }
+
+      p {
+        color: $white;
+      }
+    }
+  }
+
+  .frame-type-header {
+    header {
+      h2 {
+        // @include inline-block;
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
+.headlind-block {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px 0;
+  text-align: center;
+
+  p {
+    @include font-size($font-sizes18);
+    text-align: center;
+  }
+}
+
+.contact-box {
+  padding: 14px 15px 0;
+}
+
+.gallery-wrap {
+  @include inline-block;
+  width: 100%;
+
+  figure {
+    margin-bottom: 30px;
+
+    img {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.figure {
+  figcaption {
+    position: relative;
+    top: -8px;
+  }
+}
+
+.fancybox-close-small {
+  &:hover {
+    color: $secondary-light-color;
+  }
+}
+
+.accordion {
+  .card {
+    border: 0;
+    margin-bottom: 15px;
+  }
+
+  .card-header {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 4px !important;
+  }
+}
+
+.button-group {
+  .btn {
+    margin-right: 15px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

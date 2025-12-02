@@ -1,0 +1,24 @@
+/****************************************************************************
+ * Tab
+***************************************************************************/
+.tab-wrap {
+  .nav-tabs .nav-link {
+    color: $primary-color;
+    cursor: pointer;
+    font-weight: $semibold-weight;
+    width: 100%;
+  }
+
+  .tab-content {
+    padding-top: 30px;
+  }
+
+  .nav-tabs.flex-column {
+    border: 1px solid #dee2e6;
+
+    .nav-link.active {
+      border-bottom: 1px solid #dee2e6;
+      border-radius: 0;
+    }
+  }
+}

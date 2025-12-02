@@ -1,0 +1,88 @@
+/****************************************************************************
+ * Sidebar
+ ***************************************************************************/
+.sidebar-widget {
+	border-bottom: 0;
+	margin-bottom: 30px;
+
+	.list-group {
+		padding: 0;
+
+		.search-block {
+			.btn {
+				border-radius: 0 4px 4px 0 !important;
+				margin: 0;
+			}
+		}
+
+		a {
+			@include inline-block;
+			border-bottom: 1px solid $medium-bg-color;
+			color: $secondary-light-color;
+			padding: 10px 20px;
+			width: 100%;
+
+			&:hover {
+				background-color: $light-bg-color;
+			}
+		}
+
+		ul {
+			border: 1px solid $medium-bg-color;
+			list-style: none;
+			margin-bottom: 0;
+			padding-left: 0;
+
+			ul {
+				background-color: $light-bg-color;
+				display: none;
+				padding-left: 15px;
+			}
+
+			li {
+				@include inline-block;
+				list-style: none;
+				width: 100%;
+
+				&:last-child {
+					a {
+						border-bottom: 0;
+					}
+				}
+
+				&.sidemenu-active {
+					ul {
+						display: block;
+
+						li {
+							&.sidemenu-active {
+								>a {
+									color: $primary-color;
+								}
+							}
+
+							a {
+								background-color: #fff;
+								border-left: 1px solid $medium-bg-color;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.info-block {
+	border: 1px solid $medium-bg-color;
+	padding: 20px 20px 10px;
+}
+
+.card {
+	.input-group-btn {
+		.btn {
+			border-radius: 0 4px 4px 0 !important;
+			margin: 0;
+		}
+	}
+}

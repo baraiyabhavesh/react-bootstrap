@@ -1,0 +1,32 @@
+.modal-dialog {
+  &.modal-fullscreen {
+    height: auto;
+    position: absolute;
+  }
+}
+
+.modal-open {
+  overflow: auto !important;
+  padding-right: 0 !important;
+}
+
+.bottom-modal {
+  .modal-fullscreen {
+    bottom: 0;
+  }
+}
+
+.top-modal {
+  .modal-fullscreen {
+    top: 0;
+  }
+}
+
+.modal-components {
+  .btn {
+    display: block;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+}

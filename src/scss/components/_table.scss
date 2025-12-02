@@ -1,0 +1,30 @@
+.table-responsive {
+  tbody {
+
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+      min-width: 150px;
+
+      @include media-breakpoint-up(lg) {
+        min-width: auto;
+      }
+    }
+  }
+}
+
+tr {
+  th {
+    border-bottom: 2px solid black !important;
+  }
+}
+
+.table-borderless {
+  tr {
+    th {
+      border: none !important;
+    }
+  }
+}

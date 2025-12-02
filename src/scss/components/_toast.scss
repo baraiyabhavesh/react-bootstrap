@@ -1,0 +1,24 @@
+.toast-container {
+  position: fixed;
+  z-index: 100;
+}
+
+.toast-header {
+  padding: 20px;
+  .toast-icon {
+    margin-right: 10px;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 4px;
+  }
+}
+
+.toast__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}

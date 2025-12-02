@@ -1,0 +1,50 @@
+@import "/node_modules/bootstrap/scss/bootstrap.scss";
+@import "react-lazy-load-image-component/src/effects/blur.css";
+
+// Our own variables
+@import "./base/variables";
+@import "./layouts/boxed";
+@import "./layouts/dark";
+@import "./layouts/gap-outside";
+
+// All Mixin
+@import "./mixins/mixins";
+
+// Base Style
+@import "./base/font-size";
+@import "./base/typography";
+@import "./base/base";
+@import "./base/spacing";
+
+@import "~@fancyapps/ui/dist/fancybox/fancybox.css";
+
+// Components
+
+@import "./components/header";
+@import "./components/general";
+@import "./components/content-section";
+@import "./components/teaser-block";
+@import "./components/landing-slider";
+@import "./components/team-slider";
+@import "./components/breadcurmbs";
+@import "./components/banner";
+@import "./components/footer";
+@import "./components/style-switcher";
+@import "./components/accordion";
+@import "./components/progressbar";
+@import "./components/sidebar";
+@import "./components/buttons";
+@import "./components/loading-overlay";
+@import "./components/cms";
+@import "./components/news";
+@import "./components/blog";
+@import "./components/table";
+@import "./components/tab";
+@import "./components/timeline";
+@import "./components/forms";
+@import "./components/price-block";
+@import "./components/jumbotron";
+@import "./components/toast";
+@import "./components/modal";
+@import "./components/video";
+@import "./components/scrollspy";

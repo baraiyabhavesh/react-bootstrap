@@ -1,0 +1,157 @@
+/* Boxed Layout */
+.body {
+	background-color: #fff !important;
+	background-image: none !important;
+}
+
+body.boxed {
+	background-color: #f3f3f3;
+	background-color: transparent;
+	background-position: 0 0;
+	background-repeat: repeat;
+
+	.container {
+		max-width: 1140px;
+	}
+
+	header.sticky-header {
+		left: 50%;
+		transform: translateX(-50%);
+		max-width: 1200px;	
+	}
+
+	.header-main {
+		border-top: 5px solid $primary-color;
+	}
+
+	.body {
+		position: relative;
+		background-color: #fff;
+		border-radius: 5px;
+		box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+		margin: 0 auto;
+		max-width: 1200px;
+		height: auto;
+	}
+
+	#header {
+		.header-body {
+			border-top-color: transparent;
+			border-top: 0;
+		}
+
+		&.header-effect-shrink {
+			.header-body {
+				max-width: 1200px;
+			}
+		}
+	}
+
+	&.dark {
+		.main {
+			background-color:#000;
+		}
+	}
+	.main {
+		background-color: #FFF;
+		overflow: hidden;
+	}
+	section.section {
+		&.section-footer {
+			padding-bottom: 100px;
+		}
+	}
+	#footer {
+		margin-top: 0;
+		border-bottom: 4px solid #1A1C1E;
+		border-radius: 0 0 5px 5px;
+	}
+	.footer-reveal {
+		max-width: 1200px;
+		left: auto !important;
+	}
+}
+
+body.dark,
+body.boxed.dark { 
+	.body {
+		background-color: #212529 !important;
+	}
+}
+
+/* Responsive */
+@media (min-width: 1200px) {
+
+	// Sticky Header
+	body.boxed.sticky-header-active {
+		#header {
+			.header-body {
+				width: 100%;
+				max-width: 1200px;
+			}
+		}
+	}
+	body.boxed {
+		.footer-reveal {
+			bottom: 25px !important;
+		}
+	}
+	
+}
+
+@media (max-width: 1199px) {
+	body.boxed {
+		.footer-reveal {
+			border-bottom: none !important;
+		}
+	}
+}
+
+@media (min-width: 992px) {
+	body.boxed {
+
+		// Top Colored
+		#header {
+			.header-top.header-top-colored {
+				margin-top: -18px;
+				border-radius: 4px 4px 0 0;
+			}
+		}
+
+	}
+
+	// Sticky Header
+	body.boxed.sticky-header-active {
+		#header:not(.header-effect-shrink) {
+			.header-body {
+				position: fixed !important;
+				padding-left: 15px;
+				padding-right: 15px;
+			}
+			.header-nav-bar {
+				margin: 0 -15px -9px;
+			}
+		}
+	}
+
+}
+
+@media (max-width: 991px) {
+
+	body.boxed {
+		.body {
+			margin: 0 auto;
+			border-radius: 0;
+		}
+	}
+
+}
+
+@media (max-width: 767px) {
+
+	/* Boxed */
+	body.boxed {
+		background: none !important;
+	}
+
+}

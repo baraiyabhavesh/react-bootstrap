@@ -1,0 +1,134 @@
+/****************************************************************************
+ * Landing Slider
+ ***************************************************************************/
+.landing-section {
+  position: relative;
+  display: block;
+}
+
+.slider-overlay {
+  .landingslider__overlay {
+    &::before {
+      background-color: rgba(18, 34, 65, 0.65);
+      content: "";
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+  }
+}
+
+.landingslider {
+  position: relative;
+
+  .carousel-item {
+    position: relative;
+  }
+
+  .carousel-item {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 480px;
+    position: relative;
+    width: 100%;
+
+    .carousel-slide-content {
+      bottom: auto;
+      left: 50%;
+      margin: 0 auto;
+      max-width: 668px;
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      z-index: 1;
+
+      h2,
+      p {
+        margin-bottom: 15px;
+      }
+
+      p {
+        @include font-size($font-sizes22);
+        font-weight: $light-weight;
+      }
+
+      .btn {
+        background-color: $brand-color;
+        color: $white;
+        margin-top: 0;
+        @include media-breakpoint-up(lg) {
+          margin-top: 25px;
+        }
+        &:hover {
+          background-color: $white;
+          color: $brand-color;
+        }
+      }
+    }
+
+    .landingslider__video {
+      width: 100%;
+    }
+  }
+
+  .carousel-indicators {
+    bottom: 30px;
+  }
+}
+
+.landingslider {
+  .carousel-item {
+    .carousel-slide-content {
+      padding: 0 37px;
+    }
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .landingslider {
+    .carousel-item {
+      height: 480px;
+
+      .carousel-slide-content {
+        max-width: 480px;
+        padding: 0;
+        width: 100%;
+
+        h2,
+        p {
+          margin-bottom: 35px;
+        }
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .landingslider {
+    .carousel-item {
+      height: 650px;
+
+      .carousel-slide-content {
+        max-width: 631px;
+        padding: 0 28px;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .landingslider {
+    .carousel-item {
+      .carousel-slide-content {
+        max-width: 800px;
+      }
+    }
+  }
+}

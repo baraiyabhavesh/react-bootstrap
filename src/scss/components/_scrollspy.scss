@@ -1,0 +1,147 @@
+.scrollspy-sections {
+  overflow: visible;
+}
+
+.nav-indicator {
+  position: absolute;
+  background-color: $primary-color;
+  height: 100%;
+  left: 0;
+  transform: translateX(0%);
+  transition: all ease-in-out 0.5s;
+  z-index: -1;
+  display: none;
+}
+
+.scrollspy-sections__tabs {
+  background: $white;
+  text-align: center;
+  position: sticky;
+  top: 0px;
+  padding: 0;
+  transition: 0.5s;
+  border-bottom: 1px solid $border-color;
+
+  nav {
+    ul {
+      @include flexbox();
+      border: 0;
+      text-align: center;
+      align-items: center;
+      justify-content: space-around;
+      flex-direction: column;
+      padding: 0;
+      width: 100%;
+      position: relative;
+      margin: auto;
+
+      li {
+        @include font-size($font-sizes18);
+        width: 100%;
+        padding: 0 20px;
+        list-style: none;
+        border-bottom: 0.5px solid $border-color;
+
+        a {
+          padding: 20px 0;
+          display: inline-flex;
+          cursor: pointer;
+          align-items: center;
+          z-index: 1;
+          transition: all ease-in-out 0.2s;
+          color: $text-color;
+
+          &:hover {
+            span {
+              color: $primary-color;
+            }
+          }
+        }
+
+        &.active-section {
+          transition: all ease-in-out 0.3s;
+          a {
+            color: $text-color;
+            &:hover {
+              span {
+                color: $white;
+              }
+            }
+          }
+        }
+
+        @for $i from 2 through 6 {
+          &:nth-child(#{$i}) {
+            &.active-section {
+              ~ .nav-indicator {
+                transform: translateX(#{($i - 1) * 100%});
+              }
+            }
+          }
+        }
+      }
+
+      &.menu {
+        .dropdown-toggle {
+          display: inline-flex;
+          visibility: visible;
+          background-color: $primary-color;
+          padding: 20px;
+          position: relative;
+          color: $white;
+          align-items: center;
+          justify-content: space-between;
+
+          &::after {
+            display: none;
+          }
+        }
+
+        .active-section {
+          a {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.scrollspy-sections__content {
+  padding-top: 60px;
+}
+
+@include media-breakpoint-up(lg) {
+  .scrollspy-sections {
+    overflow: visible;
+  }
+
+  .nav-indicator {
+    display: block;
+  }
+
+  .scrollspy-sections__tabs {
+    position: sticky;
+
+    nav {
+      ul {
+        flex-direction: row;
+
+        li {
+          border: none;
+        }
+
+        &.menu {
+          .dropdown-toggle {
+            display: none;
+            visibility: hidden;
+          }
+        }
+      }
+    }
+  }
+
+  .scrollspy-sections__content {
+    padding-top: 60px;
+  }
+}

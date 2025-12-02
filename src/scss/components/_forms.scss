@@ -1,0 +1,367 @@
+/****************************************************************************
+ * Forms
+ ***************************************************************************/
+.form-control {
+  @include font-size($font-sizes16);
+}
+
+.control-label {
+  font-weight: $regular-weight;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+select {
+  background-position: 93% center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  --moz-appearance: none;
+  --webkit-appearance: none;
+
+  @include media-breakpoint-up(md) {
+    background-position: 99% center;
+  }
+}
+
+.logout-form,
+.contact-form {
+  max-width: 500px;
+  padding: 10px 0;
+}
+
+#page_120 .tx-felogin-pi1 {
+  form {
+    margin-top: 40px;
+  }
+}
+
+.tx-felogin-pi1 {
+  fieldset > div {
+    margin-bottom: 20px;
+  }
+
+  form {
+    max-width: 500px;
+  }
+}
+
+.femanager_new {
+  form {
+    max-width: 500px;
+  }
+}
+
+.tx-indexedsearch-searchbox-button {
+  cursor: pointer;
+}
+
+form {
+  .invalid-feedback {
+    @include inline-block;
+  }
+
+  legend {
+    @include font-size($font-sizes32);
+    font-weight: $semibold-weight;
+    margin-bottom: 30px;
+  }
+
+  label {
+    font-weight: $semibold-weight;
+    margin-bottom: 5px;
+  }
+
+  .form-control {
+    @include inline-block;
+    background-color: $white;
+    border: 1px solid $medium-bg-color;
+    border-radius: 4px;
+    padding: 7px 10px;
+    width: 100%;
+    color: $input-color;
+
+    &:focus {
+      border: 1px solid $medium-bg-color;
+      box-shadow: none;
+      outline: none;
+    }
+
+    &[type="submit"] {
+      @include transition(all, 0.2s, ease, 0s);
+      background-color: $btn-primary-hover-bg;
+      border: 1px solid $btn-primary-hover-bg;
+      color: $white;
+
+      &:hover {
+        background-color: $btn-primary-bg;
+        color: $btn-primary-color;
+      }
+    }
+  }
+
+  .actions {
+    .btn-toolbar {
+      display: block;
+    }
+
+    .btn-group {
+      display: block;
+    }
+  }
+
+  .news-latter-form {
+    padding: 0 0 20px;
+    text-align: center;
+
+    input {
+      height: 40px;
+      margin-right: 15px;
+      max-width: 320px;
+    }
+
+    .btn {
+      margin: 0;
+      width: auto;
+    }
+  }
+
+  .femanager_country,
+  .femanager_gender {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .femanager_gender {
+    .radio {
+      display: inline-block;
+      width: 96px;
+
+      label {
+        align-items: center;
+        display: flex;
+      }
+    }
+  }
+}
+
+// Search-Form Start
+.tx-indexedsearch-form {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  margin-bottom: 30px;
+
+  .tx-indexedsearch-searchbox-button {
+    background: transparent;
+    border: 1px solid $primary-color;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    color: $primary-color;
+  }
+}
+
+.tx-indexedsearch-form label {
+  color: $brand-color;
+  font-weight: 600;
+  margin-bottom: 2px;
+  margin-right: 10px;
+}
+
+input#tx-indexedsearch-searchbox-button-submit {
+  height: 41px;
+  padding: 4px 15px 3px;
+  width: auto;
+}
+
+input#tx-indexedsearch-searchbox-button-submit:hover {
+  background-color: transparent;
+  color: $brand-color;
+}
+
+input#tx-indexedsearch-searchbox-sword {
+  border: 1px solid $brand-color;
+  border-right: 0;
+  font-size: 14px;
+  height: 41px;
+  margin-right: 0;
+  outline: none !important;
+  padding: 4px 15px;
+  width: auto;
+}
+
+.tx-indexedsearch-info-sword + .tx-indexedsearch-browsebox,
+.tx-indexedsearch-res {
+  border-bottom: 1px solid $medium-bg-color;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.tx-indexedsearch-res time {
+  color: $brand-color;
+  display: block;
+  font-size: 16px;
+  margin-bottom: 7px;
+  margin-top: -12px;
+}
+
+.tx-indexedsearch-res + .pagination,
+.tx-indexedsearch-browsebox + .pagination {
+  display: flex !important;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.pagination {
+  display: flex;
+  width: 100%;
+
+  li {
+    border: 1px solid $medium-bg-color;
+    border-right: 0;
+
+    &:last-child {
+      border-right: 1px solid $medium-bg-color;
+    }
+  }
+
+  .page-item,
+  .page-nav {
+    line-height: normal;
+    text-align: center;
+
+    a {
+      align-items: center;
+      background-color: $light-bg-color;
+      display: flex;
+      font-size: 14px;
+      height: 36px;
+      justify-content: center;
+      padding: 4px;
+      width: 36px;
+
+      &:hover,
+      &.active {
+        background-color: $brand-color;
+        color: $white;
+      }
+    }
+  }
+
+  .page-nav {
+    a {
+      font-size: 13px;
+      letter-spacing: -1px;
+
+      &.disabled {
+        color: $text-color;
+        cursor: default;
+        pointer-events: none;
+      }
+
+      &:hover,
+      &.active {
+        background-color: inherit;
+        color: $brand-color;
+      }
+
+      .fa-angle-left::before {
+        content: "\f100";
+      }
+
+      .fa-angle-right::before {
+        content: "\f101";
+      }
+    }
+  }
+}
+
+.pagination li.active a {
+  background-color: $brand-color;
+  color: $white;
+}
+
+.pagination .page-item::after,
+.pagination .page-nav::after {
+  display: none;
+}
+
+.pagination .page-item,
+.pagination .page-nav {
+  padding: 0;
+
+  strong {
+    font-weight: $regular-weight;
+  }
+}
+
+.news-latter-form {
+  form {
+    input {
+      margin-bottom: 15px;
+      max-width: 100%;
+      width: 100%;
+
+      &:nth-child(2) {
+        margin-right: 0;
+      }
+    }
+
+    .btn {
+      display: block;
+    }
+  }
+}
+
+.error {
+  color: $danger-light-color;
+
+  &.invalid-tooltip {
+    color: $white;
+    background-color: $danger-light-color;
+  }
+}
+
+.dark {
+  .error {
+    color: $white;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .news-latter-form {
+    text-align: left;
+
+    form {
+      input {
+        width: 38.7%;
+      }
+    }
+  }
+
+  textarea.form-control {
+    min-height: 195px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .pagination {
+    margin-top: 50px;
+  }
+
+  .contact-form {
+    padding: 20px 0;
+  }
+}

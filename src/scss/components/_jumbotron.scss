@@ -1,0 +1,11 @@
+.jumbotron{
+    background-color: $light-bg-color;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    padding: 32px 16px 16px;
+}
+@include media-breakpoint-up(sm){
+    .jumbotron{
+        padding: 48px 64px 32px;
+    }
+}

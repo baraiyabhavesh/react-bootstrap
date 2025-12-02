@@ -1,0 +1,127 @@
+/**************************************************************************
+* Price Block Styling
+***************************************************************************/
+.price-block {
+  @include transition(all, 0.2s, ease, 0s);
+  border: 1px solid $medium-bg-color;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+  cursor: pointer;
+  margin-bottom: 30px;
+  position: relative;
+
+  .price-block-header {
+    @include font-size($font-sizes26);
+    background-color: $light-bg-color;
+    display: flex;
+    font-weight: $semibold-weight;
+    justify-content: space-between;
+    padding: 30px 20px 25px;
+
+    h3 {
+      @include font-size($font-sizes26);
+      color: $primary-color;
+      font-weight: $semibold-weight;
+      margin: 0;
+      .fa-dollar-sign {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .price-block-content {
+    padding-bottom: 20px;
+    text-align: center;
+
+    ul {
+      list-style: none;
+      padding: 0 15px;
+      text-align: left;
+
+      li {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        padding: 14px 10px 14px 30px;
+        position: relative;
+        .svg-inline--fa {
+          @include vertical-align($position: absolute);
+          font-weight: $light-weight;
+          left: 5px;
+          &.fa-check {
+            path {
+              fill: $sucess-light-color;
+            }
+          }
+          &.fa-xmark {
+            path {
+              fill: $danger-light-color;
+            }
+          }
+        }
+      }
+    }
+
+    .btn {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: $white;
+
+      &:hover {
+        background-color: transparent;
+        color: $primary-color;
+      }
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 6px 20px 0 rgba(52, 54, 56, 0.1);
+  }
+
+  &.orange {
+    .price-block-content {
+      .btn {
+        background-color: $text-color;
+        border-color: $text-color;
+
+        &:hover {
+          background-color: transparent;
+          border-color: $text-color;
+          color: $text-color;
+        }
+      }
+    }
+
+    .price-block-header {
+      h3 {
+        border-color: $text-color;
+        color: $text-color;
+      }
+    }
+  }
+
+  &.light-blue {
+    .price-block-content {
+      .btn {
+        background-color: $secondary-color;
+        border-color: $secondary-color;
+
+        &:hover {
+          background-color: transparent;
+          border-color: $secondary-color;
+          color: $secondary-color;
+        }
+      }
+    }
+
+    .price-block-header {
+      h3 {
+        border-color: $secondary-color;
+        color: $secondary-color;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .price-block {
+    margin: 20px 0;
+  }
+}

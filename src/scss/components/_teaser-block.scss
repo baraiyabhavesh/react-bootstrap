@@ -1,0 +1,269 @@
+/****************************************************************************
+ * Teaser Block
+ ***************************************************************************/
+.teaser-block {
+  h3 {
+    @include font-size($font-sizes24);
+  }
+
+  .btn-group {
+    @include inline-block;
+    width: 100%;
+
+    a {
+      @include inline-block;
+      margin-right: 5px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.teaser-icon {
+  align-items: center;
+  color: $primary-color;
+  display: flex;
+  font-size: 50px;
+  height: 70px;
+  padding-bottom: 15px;
+}
+
+.landing-section + .content-section {
+  .teaser-icon {
+    img {
+      margin: 0;
+      min-width: 40px;
+      width: auto;
+    }
+  }
+}
+
+.card {
+  border-color: $medium-bg-color;
+  border-radius: 0;
+
+  .card-body {
+    overflow: hidden;
+  }
+
+  .card-title {
+    a {
+      color: inherit;
+    }
+  }
+
+  .card-img-top {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .card-footer {
+    background-color: $light-bg-color;
+    border-top: 1px solid $medium-bg-color;
+    padding: 0.6rem 1.25rem;
+
+    a,
+    a .fa {
+      color: $secondary-light-color;
+    }
+
+    a {
+      font-size: 18px;
+      margin: 2px 0 0;
+      padding: 0 8px;
+
+      &:hover {
+        color: $brand-color;
+
+        .fa {
+          color: $brand-color;
+        }
+      }
+    }
+  }
+}
+
+.team-card {
+  &.card {
+    .card-body {
+      padding: 5px 10px 20px;
+    }
+  }
+}
+
+.teaser {
+  @include inline-block;
+  margin-bottom: 15px;
+  width: 100%;
+  + .teaserframe-space-before-extra-large {
+    padding-top: 30px;
+  }
+
+  h3 {
+    @include font-size($font-sizes24);
+    margin-bottom: 15px;
+  }
+}
+
+.teaserframe-space-before-extra-large {
+  @include inline-block;
+  margin-bottom: 30px;
+  width: 100%;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    @include font-size($font-sizes24);
+    margin-bottom: 25px;
+  }
+
+  .teaser-link {
+    .teaser-image {
+      display: none;
+    }
+  }
+}
+
+.teaser-link {
+  border: 1px solid $medium-bg-color;
+  box-shadow: 0 1px 26px 0 rgba(0, 0, 0, 0.1);
+  display: block;
+  margin-bottom: 30px;
+
+  &:hover {
+    box-shadow: none;
+
+    span {
+      color: $text-color;
+    }
+  }
+
+  .teaser-image {
+    padding: 30px;
+    text-align: center;
+    img {
+      max-width: 100%;
+    }
+    + span {
+      border-top: 1px solid $medium-bg-color;
+    }
+  }
+
+  span {
+    @include inline-block;
+    @include transition(all, 0.2s, ease, 0s);
+    color: inherit;
+    margin-bottom: 0;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.card-icon-wrapper {
+  padding: 16px 0;
+  svg {
+    display: inline-block;
+    font-size: 70px;
+    height: 36px;
+  }
+}
+
+/****************************************************************************
+   * Upcoming Event
+   ***************************************************************************/
+.upcoming-event-block {
+  max-width: 600px;
+
+  h2 {
+    color: $white;
+  }
+
+  p {
+    color: $white;
+  }
+}
+
+.card-block {
+  margin-bottom: 30px;
+
+  .card-img {
+    @include inline-block;
+    min-height: 200px;
+    width: 100%;
+  }
+
+  &.cards-icon {
+    .card {
+      border: 0;
+    }
+
+    .card-img {
+      height: 36px;
+      margin-bottom: 15px;
+      min-height: 1px;
+    }
+
+    img {
+      width: auto;
+    }
+
+    .card-body {
+      h4 {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+
+.card.bg-primary {
+  background-color: $primary-color !important;
+}
+
+.card.bg-secondary {
+  background-color: $secondary-color !important;
+}
+
+.card.bg-primary,
+.card.bg-secondary,
+.card.bg-success,
+.card.bg-danger,
+.card.bg-warning,
+.card.bg-info,
+.card.bg-light,
+.card.bg-dark {
+  color: $white;
+}
+
+.cards-icon__fa {
+  color: $primary-color;
+  display: inline-block;
+  font-size: 50px;
+  padding: 6px;
+  margin-left: 8px;
+}
+.cards-icon {
+  .card .card-text {
+    min-height: 59px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .cards-icon {
+    .card .card-text {
+      min-height: 130px;
+    }
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .cards-icon {
+    .card .card-text {
+      min-height: 102px;
+    }
+  }
+}

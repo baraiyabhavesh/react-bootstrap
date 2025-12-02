@@ -1,0 +1,91 @@
+//****************************************************************************
+//  Bootsrap variables overrides
+//***************************************************************************/
+:root {
+  --primary-color: #5485f8;
+  --secondary-color: #6c757d;
+  --secondary-color-light: #71839e;
+  --text-color: #122241;
+  --website-size: 100%;
+  --font-primary : var(--font-work-sans);
+  --cookieBtnBgColor: transparent;
+  --cookieBtnTextColor: "#FFFFFF";
+}
+
+// Assign Google Font-family
+// $font-family: var(--font-work-sans);
+$btn-box-shadow: none;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 768px,
+  lg: 960px,
+  xl: 1200px
+);
+
+// Theme Color
+$brand-color: var(--primary-color);
+
+$white: #fff;
+$black: #000;
+
+// Bootstrap Color
+$primary-color: var(--primary-color);
+$secondary-color: var(--secondary-color);
+$text-color: var(--text-color);
+$secondary-light-color: var(--secondary-color-light);
+$text-muted-color: $secondary-light-color;
+
+$warning: #ffb546;
+$success: #55c791;
+$danger: #f96262;
+$info: #6eccde;
+$light: #dbdee6;
+
+$sucess-light-color: #77cf9a;
+$danger-light-color: #ff7e7e;
+$warning-light-color: #ffb546;
+
+//****************************************************************************
+//  COLOR
+//***************************************************************************/
+$brand-link-color: $brand-color;
+$brand-link-hover-color: $text-color;
+
+$cta-link-bg: rgba(224, 215, 150, 0.7);
+$gray-link-bg: #e0e0e0;
+
+//****************************************************************************
+//  Background
+//***************************************************************************/
+$medium-bg-color: #dbdee6;
+$light-bg-color: #f5f6f9;
+
+//****************************************************************************
+//  Font Weight
+//***************************************************************************/
+$thin-weight: 100;
+$extralight-weight: 200;
+$light-weight: 300;
+$regular-weight: 400;
+$medium-weight: 500;
+$semibold-weight: 600;
+$bold-weight: 700;
+$extrabold-weight: 800;
+$black-weight: 900;
+
+//****************************************************************************
+//  Buttons
+//***************************************************************************/
+
+//Normal Button
+$btn-primary-color: $brand-color;
+$btn-primary-bg: $white;
+$btn-primary-hover-bg: $brand-color;
+$btn-primary-hover-color: $white;
+
+//****************************************************************************
+//  INPUT
+//***************************************************************************/
+$input-bg-color: #fff;
+$input-color: var(--secondary-color-light);

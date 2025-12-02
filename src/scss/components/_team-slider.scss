@@ -1,0 +1,155 @@
+/****************************************************************************
+ * Team Slider
+ ***************************************************************************/
+.team-slider-section {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+.teamslider {
+  margin: 0 auto;
+  max-width: 600px;
+  position: relative;
+
+  .carousel-item {
+    height: auto;
+    max-width: 100%;
+  }
+
+  .team-slide-content {
+    margin: 0 auto;
+    max-width: 85%;
+    padding-bottom: 20px;
+    text-align: center;
+
+    img {
+      border-radius: 50%;
+      margin-bottom: 10px;
+      object-fit: cover;
+    }
+
+    p {
+      color: $brand-color;
+    }
+  }
+
+  .carousel-indicators {
+    bottom: -15px;
+    button {
+      background-color: $medium-bg-color;
+      border-radius: 50%;
+      height: 11px;
+      width: 11px;
+
+      &.active {
+        background-color: $text-color;
+      }
+    }
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    opacity: 1;
+  }
+
+  .carousel-control-next-icon,
+  .carousel-control-prev-icon {
+    color: $secondary-light-color;
+  }
+
+  .carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='gray' viewBox='0 0 8 8'><path d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/></svg>");
+    font-size: 40px;
+    font-weight: $bold-weight;
+  }
+
+  .carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='gray' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+    font-size: 40px;
+    font-weight: $bold-weight;
+  }
+
+  blockquote {
+    @include font-size($font-sizes18);
+    background-color: transparent;
+    border-left: 0;
+    font-style: italic;
+    padding: 0;
+
+    &::before {
+      content: '"';
+      font-size: 20px;
+      padding-right: 2px;
+    }
+
+    &::after {
+      content: '"';
+      font-size: 20px;
+      padding-left: 2px;
+    }
+  }
+}
+
+blockquote {
+  @include word-break;
+}
+
+.client-slider {
+  &.owl-carousel {
+    .owl-wrapper {
+      display: table !important;
+    }
+
+    .owl-item {
+      display: table-cell;
+      float: none;
+      vertical-align: middle;
+
+      .client-logo {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.team-slider-section {
+  padding: 20px 0;
+}
+
+.teamslider {
+  .carousel-control-prev,
+  .carousel-control-next {
+    margin: 0 15px;
+    width: 20px;
+  }
+}
+
+@include media-breakpoint-only(xs) {
+  .teamslider {
+    .team-slide-content {
+      blockquote {
+        padding: 0 15px;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .teamslider {
+    max-width: 900px;
+
+    .team-slide-content {
+      max-width: 469px;
+      padding-bottom: 40px;
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .teamslider {
+    .team-slide-content {
+      max-width: 600px;
+    }
+  }
+}

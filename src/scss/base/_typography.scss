@@ -1,0 +1,140 @@
+// Font
+/****************************************************************************
+  Body
+ ***************************************************************************/
+body {
+  @include font-size($font-sizes16);
+  color: $text-color;
+  font-family: var(--font-work-sans);
+  font-weight: $regular-weight;
+  position: relative;
+  text-transform: none;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+.container-fluid {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+a {
+  text-decoration: none;
+  transition: all 0.2s ease 0s;
+  color: $primary-color;
+}
+
+p {
+  &.lead {
+    @include font-size($font-sizes20);
+  }
+}
+
+blockquote {
+  @include font-size($font-sizes18);
+  background-color: $light-bg-color;
+  border-left: 5px solid $brand-color;
+  font-style: italic;
+  padding: 2rem 2rem 1.15rem;
+
+  p {
+    @include font-size($font-sizes18);
+    font-style: italic;
+    position: relative;
+
+    &::before {
+      content: '"';
+      display: inline-block;
+      font-size: 30px;
+      padding-right: 4px;
+      position: relative;
+      top: 2px;
+    }
+  }
+}
+
+.text-right {
+  text-align: right;
+}
+
+@include media-breakpoint-up(sm) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+//****************************************************************************
+//  Scale The Site
+//***************************************************************************/
+
+body {
+  @include media-breakpoint-up(xl) {
+    overflow-x: hidden;
+    zoom: var(--website-size);
+  }
+}
+
+/****************************************************************************
+  Headings
+ ***************************************************************************/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: $semibold-weight;
+}
+
+h1 {
+  @include font-size($font-sizes42);
+  margin-bottom: 35px;
+}
+
+h2 {
+  @include font-size($font-sizes32);
+}
+
+h3 {
+  @include font-size($font-sizes26);
+}
+
+h4 {
+  @include font-size($font-sizes22);
+}
+
+h5 {
+  @include font-size($font-sizes18);
+}
+
+h6 {
+  @include font-size($font-sizes16);
+}

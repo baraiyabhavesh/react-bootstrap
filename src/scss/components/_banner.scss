@@ -1,0 +1,99 @@
+/**************************************************************************
+* Banner
+***************************************************************************/
+.banner-section {
+  @include inline-block;
+  height: 260px;
+  position: relative;
+  width: 100%;
+
+  &.parallax-banner {
+    &::before {
+      background-color: rgba($black, 0.36);
+      content: '';
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+  }
+
+  &.parallax-banner {
+    .bg-img {
+      background-attachment: fixed;
+    }
+  }
+
+  &.full-width-banner {
+    .banner-content {
+      max-width: 100%;
+      padding: 50px 15px;
+    }
+  }
+
+  &.medium-banner-section {
+    &::before {
+      display: none;
+    }
+  }
+
+  &.small-banner {
+    height: 220px;
+  }
+  
+  .bg-img {
+    @include bg-img;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .banner-content {
+    @include horizontal-vertical-align(absolute);
+    color: $white;
+    margin: 0 auto;
+    max-width: 910px;
+    padding: 20px 15px 5px;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+  }
+
+  .container {
+    height: 100%;
+    padding: 0;
+    position: relative;
+  }
+}
+
+section.banner-section.parallax-banner {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@include media-breakpoint-up(md) {
+  .banner-section {
+    height: 240px;
+
+    &.small-banner {
+      height: 200px;
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .banner-section {
+    height: 600px;
+    
+    &.small-banner {
+      height: 300px;
+    }
+  }
+}
