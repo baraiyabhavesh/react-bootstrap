@@ -4,11 +4,7 @@ import DOMPurify from "dompurify";
 import { getImageUrlFromData } from "@/utils/imageUrlHelper";
 
 const ParallaxBanner = ({ content, spaceAfter, spaceBefore }) => {
-  console.log(content);
-  // Handle image from multiple possible locations
   let imageData = null;
-  
-  // Try multiple locations in order of priority
   if (content?.image) {
     imageData = content.image;
   } else if (content?.pi_flexform_content?.image) {
@@ -18,17 +14,13 @@ const ParallaxBanner = ({ content, spaceAfter, spaceBefore }) => {
   } else if (content?.content?.pi_flexform_content?.image) {
     imageData = content.content.pi_flexform_content.image;
   }
-  
-  // Handle container wrappers - recursively extract
+    
   while (imageData?.container && typeof imageData.container === "object") {
     imageData = imageData.container.image || imageData.container;
   }
   
   const imageUrl = getImageUrlFromData(imageData) || "";
 
-  console.log("imageUrl",imageUrl);
-  
-  // Extract content HTML from multiple locations
   const contentHtml = content?.content || content?.pi_flexform_content?.content || "";
   
   return (

@@ -5,10 +5,8 @@ import { Container } from "react-bootstrap";
 import { getImageUrlFromData } from "@/utils/imageUrlHelper";
 
 const MediumBanner = ({ content, spaceAfter }) => {
-  // Handle image from multiple possible locations
   let imageData = null;
   
-  // Try multiple locations in order of priority
   if (content?.image) {
     imageData = content.image;
   } else if (content?.pi_flexform_content?.image) {
@@ -19,7 +17,6 @@ const MediumBanner = ({ content, spaceAfter }) => {
     imageData = content.content.pi_flexform_content.image;
   }
   
-  // Handle container wrappers - recursively extract
   while (imageData?.container && typeof imageData.container === "object") {
     imageData = imageData.container.image || imageData.container;
   }

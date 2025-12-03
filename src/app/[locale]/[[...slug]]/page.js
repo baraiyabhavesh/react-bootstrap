@@ -255,7 +255,7 @@ export default async function Page({ params, searchParams }) {
                   }
                 </Container>
               ) : (
-                <>
+                <Container>
                   <Row>
                     {pageData?.data?.content?.colPos5 &&
                     pageData?.data?.content?.colPos5?.length ? (
@@ -321,7 +321,7 @@ export default async function Page({ params, searchParams }) {
                       </>
                     )}
                   </Row>
-                </>
+                </Container>
               )}
             </>
           ) : (
