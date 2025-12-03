@@ -11,24 +11,50 @@ const NewsDateMenu = ({
   layoutType,
   elementType,
 }) => {
-  const list = data.data.list;
+  // Extract list from multiple possible locations (same pattern as other news components)
+  const list = data?.data?.list || data?.list || [];
   const [newsDataItem, setNewsDataItem] = useState(3);
 
   const monthlyData = {};
-  list.forEach((item) => {
-    const month = new Date(item.datetime).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
+  
+  // Ensure list is an array before calling forEach
+  if (Array.isArray(list) && list.length > 0) {
+    list.forEach((item) => {
+      if (!item) return;
+      
+      // Try multiple possible datetime property names
+      const datetime = item.datetime || item.date || item.publishDate || item.createdAt;
+      if (!datetime) return;
+      
+      try {
+        const dateObj = new Date(datetime);
+        // Check if date is valid
+        if (isNaN(dateObj.getTime())) return;
+        
+        const month = dateObj.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+        });
+
+        if (!monthlyData[month]) {
+          monthlyData[month] = [];
+        }
+
+        monthlyData[month].push(item);
+      } catch (e) {
+        // Skip items with invalid datetime
+        return;
+      }
     });
-
-    if (!monthlyData[month]) {
-      monthlyData[month] = [];
-    }
-
-    monthlyData[month].push(item);
-  });
+  }
 
   let totalNews = Object.keys(monthlyData).length;
+  
+  // If no data to display, return early
+  if (totalNews === 0) {
+    return null;
+  }
+  
   return (
     <Container>
       <div
@@ -37,7 +63,7 @@ const NewsDateMenu = ({
         } ${spaceAfter && `frame-space-after-${spaceAfter}`}`}
       >
         <header>
-          <h2>{data.header}</h2>
+          <h2>{data?.header || ""}</h2>
         </header>
 
         <div className="news">
@@ -54,9 +80,16 @@ const NewsDateMenu = ({
                     <div className="news">
                       {items.map((item, itemIndex) => {
                         count++;
-                        const formattedDate = new Date(
-                          item.datetime
-                        ).toLocaleDateString("en-GB");
+                        // Try multiple possible datetime property names
+                        const datetime = item.datetime || item.date || item.publishDate || item.createdAt;
+                        let formattedDate = "";
+                        try {
+                          if (datetime) {
+                            formattedDate = new Date(datetime).toLocaleDateString("en-GB");
+                          }
+                        } catch (e) {
+                          formattedDate = "";
+                        }
                         return (
                           <div
                             className={`timeline-block articletype-0 ${
@@ -112,7 +145,7 @@ const NewsDateMenu = ({
                 const newBlocksToShow =
                   newsDataItem + 3 <= totalNews
                     ? newsDataItem + 3
-                    : blockLength;
+                    : totalNews;
                 setNewsDataItem(newBlocksToShow);
               }}
             >

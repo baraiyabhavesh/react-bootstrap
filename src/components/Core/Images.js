@@ -33,11 +33,60 @@ const Images = ({
   const enlargeImageOnClick = data?.enlargeImageOnClick || data?.pi_flexform_content?.enlargeImageOnClick;
 
   const safeGallery = gallery || {};
-  const position =
-    safeGallery.position || {
-      horizontal: "center",
-      vertical: "above",
+  
+  // Extract position from multiple possible locations (similar to TextPic)
+  let position = {
+    horizontal: "center",
+    vertical: "above",
+    noWrap: false,
+  };
+  
+  let positionSource = null;
+  
+  // Check if gallery has position (normalized format with rows)
+  if (gallery && typeof gallery === "object" && !Array.isArray(gallery) && gallery.position) {
+    positionSource = gallery.position;
+  }
+  // Check data.position
+  else if (data?.position && typeof data.position === "object") {
+    positionSource = data.position;
+  }
+  // Check data.gallery.position
+  else if (data?.gallery?.position && typeof data.gallery.position === "object") {
+    positionSource = data.gallery.position;
+  }
+  // Check pi_flexform_content.position
+  else if (data?.pi_flexform_content?.position && typeof data.pi_flexform_content.position === "object") {
+    positionSource = data.pi_flexform_content.position;
+  }
+  // Check content.position
+  else if (data?.content?.position && typeof data.content.position === "object") {
+    positionSource = data.content.position;
+  }
+  // Check if position fields are separate properties in data
+  else if (data?.horizontal || data?.vertical || data?.noWrap !== undefined) {
+    positionSource = {
+      horizontal: data.horizontal,
+      vertical: data.vertical,
+      noWrap: data.noWrap,
     };
+  }
+  // Check pi_flexform_content for separate fields
+  else if (data?.pi_flexform_content?.horizontal || data?.pi_flexform_content?.vertical || data?.pi_flexform_content?.noWrap !== undefined) {
+    positionSource = {
+      horizontal: data.pi_flexform_content.horizontal,
+      vertical: data.pi_flexform_content.vertical,
+      noWrap: data.pi_flexform_content.noWrap,
+    };
+  }
+  
+  if (positionSource && typeof positionSource === "object") {
+    position = {
+      horizontal: positionSource.horizontal || position.horizontal,
+      vertical: positionSource.vertical || position.vertical,
+      noWrap: positionSource.noWrap !== undefined ? positionSource.noWrap : position.noWrap,
+    };
+  }
 
   const rows = safeGallery.rows || { "1": { columns: {} } };
   const border = safeGallery.border || { enabled: false };
@@ -175,7 +224,9 @@ const Images = ({
           <div
             className={`ce-${elementType} ce-${
               position.horizontal && position.horizontal
-            } ce-${position.vertical && position.vertical}`}
+            } ${position.vertical && `ce-${position.vertical}`} ${
+              position.noWrap ? "ce-nowrap" : ""
+            }`}
           >
             <div className="ce-gallery" data-ce-columns="1" data-ce-images="1">
               <div className="ce-row">
