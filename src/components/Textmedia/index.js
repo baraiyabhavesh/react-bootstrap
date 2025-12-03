@@ -17,15 +17,49 @@ const Textmedia = ({
   const { enlargeImageOnClick, gallery, bodytext } = data || {};
   const t = useTranslations();
   
-  // Ensure gallery has default structure if missing
-  const safeGallery = gallery || {};
-  const position = safeGallery.position || {
+  // Handle both array format (new API) and object format (old format)
+  let galleryImages = [];
+  let galleryPosition = {
     horizontal: "center",
     vertical: "above",
     noWrap: false,
   };
-  const rows = safeGallery.rows || { "1": { columns: {} } };
-  const border = safeGallery.border || { enabled: false };
+  let galleryBorder = { enabled: false };
+  
+  // Extract position from multiple possible locations
+  let positionSource = null;
+  if (gallery && typeof gallery === "object" && !Array.isArray(gallery) && gallery.position) {
+    positionSource = gallery.position;
+  } else if (data?.position && typeof data.position === "object") {
+    positionSource = data.position;
+  } else if (data?.gallery?.position && typeof data.gallery.position === "object") {
+    positionSource = data.gallery.position;
+  } else if (data?.pi_flexform_content?.position && typeof data.pi_flexform_content.position === "object") {
+    positionSource = data.pi_flexform_content.position;
+  }
+  
+  if (positionSource && typeof positionSource === "object") {
+    galleryPosition = {
+      horizontal: positionSource.horizontal || galleryPosition.horizontal,
+      vertical: positionSource.vertical || galleryPosition.vertical,
+      noWrap: positionSource.noWrap !== undefined ? positionSource.noWrap : galleryPosition.noWrap,
+    };
+  }
+  
+  // Extract images based on gallery structure
+  if (gallery && typeof gallery === "object" && gallery.rows) {
+    // Normalized format: gallery has rows/columns structure
+    const rows = gallery.rows || { "1": { columns: {} } };
+    if (rows["1"] && rows["1"].columns) {
+      galleryImages = Object.values(rows["1"].columns);
+    }
+  } else if (Array.isArray(gallery) && gallery.length > 0) {
+    // Raw array format: gallery is directly an array
+    galleryImages = gallery;
+  }
+  
+  const rows = gallery?.rows || { "1": { columns: {} } };
+  const border = gallery?.border || galleryBorder;
   
   const mediaElement = (urlList, border) => {
     if (!urlList || !Array.isArray(urlList) || urlList.length === 0) {
@@ -33,18 +67,31 @@ const Textmedia = ({
     }
     
     return urlList.map((item, index) => {
-      if (!item || !item.publicUrl) return null;
+      if (!item) return null;
       
-      const { properties, publicUrl } = item;
+      const publicUrl = item?.publicUrl || item?.path || item?.url || "";
+      const properties = item?.properties || item || {};
       
       if (!publicUrl || publicUrl.trim() === "" || publicUrl === "0") {
         return null;
       }
+      
+      // Determine media type from extension, mimeType, or type
+      const extension = properties.extension || publicUrl.split('.').pop()?.toLowerCase() || "";
+      const mimeType = properties.mimeType || "";
+      const mediaType = properties.type || 
+        (mimeType.includes("audio") || extension === "mp3" ? "audio" : 
+         mimeType.includes("video") || extension === "mp4" ? "video" : "video");
+      
+      // Check if it's a YouTube/iframe URL
+      const isIframe = publicUrl.includes("youtube") || publicUrl.includes("youtu.be") || 
+                      publicUrl.includes("vimeo") || properties.type === "iframe";
+      
       return (
         <React.Fragment key={publicUrl + index}>
           <div className="ce-row">
             <div className="ce-column">
-              <figure className={properties.type} key={index}>
+              <figure className={mediaType} key={index}>
                 <FancyBox
                   options={{
                     Carousel: {
@@ -52,12 +99,12 @@ const Textmedia = ({
                     },
                   }}
                 >
-                  <div className={`${properties.type}-embed`}>
-                    {properties.type === "audio" ? (
+                  <div className={`${mediaType}-embed`}>
+                    {mediaType === "audio" ? (
                       <audio className="audio-embed-item" controls>
-                        <source src={publicUrl} type="audio/mpeg" />
+                        <source src={publicUrl} type={mimeType || "audio/mpeg"} />
                       </audio>
-                    ) : properties.extension !== "mp4" ? (
+                    ) : isIframe || (extension !== "mp4" && !mimeType.includes("video")) ? (
                       <iframe
                         src={publicUrl}
                         className={`${
@@ -65,14 +112,14 @@ const Textmedia = ({
                             ? "video-embed-item rounded"
                             : "video-embed-item"
                         }`}
-                        height={properties.dimensions.height}
-                        width={properties.dimensions.width}
+                        height={properties.dimensions?.height || 113}
+                        width={properties.dimensions?.width || 200}
                         allowFullScreen
                         allow="fullscreen"
                       />
                     ) : (
                       <video
-                        width={2000}
+                        width={properties.dimensions?.width || 2000}
                         className={`${
                           border.enabled
                             ? "video-embed-item rounded"
@@ -80,7 +127,7 @@ const Textmedia = ({
                         }`}
                         controls
                       >
-                        <source src={publicUrl} type="video/mp4" />
+                        <source src={publicUrl} type={mimeType || "video/mp4"} />
                       </video>
                     )}
                   </div>
@@ -98,11 +145,14 @@ const Textmedia = ({
     });
   };
 
-  const renderVideoElement = (galleryData, bodytext) => {
-    // Ensure we have valid gallery data with defaults
-    const safePosition = galleryData?.position || position;
-    const safeRows = galleryData?.rows || rows;
-    const safeBorder = galleryData?.border || border;
+  const renderVideoElement = (bodytext) => {
+    // Use extracted position and images
+    const safePosition = galleryPosition;
+    const safeBorder = border;
+    
+    // Determine which images to use
+    const imagesToRender = galleryImages.length > 0 ? galleryImages : 
+      (gallery?.rows?.["1"]?.columns ? Object.values(gallery.rows["1"].columns) : []);
     
     return (
       <Header
@@ -130,39 +180,25 @@ const Textmedia = ({
                   />
                 </div>
               )}
-              {safeRows && Object.keys(safeRows).length > 0 && (
+              {imagesToRender.length > 0 && (
                 <div
                   className="ce-gallery"
                   data-ce-columns="1"
-                  data-ce-images="1"
+                  data-ce-images={imagesToRender.length}
                 >
-                  {Object.values(safeRows).map((row, index) => {
-                    if (!row || !row.columns) return null;
-                    return (
-                      <React.Fragment key={index}>
-                        {mediaElement(Object.values(row.columns), safeBorder)}
-                      </React.Fragment>
-                    );
-                  })}
+                  {mediaElement(imagesToRender, safeBorder)}
                 </div>
               )}
             </>
           ) : (
             <>
-              {safeRows && Object.keys(safeRows).length > 0 && (
+              {imagesToRender.length > 0 && (
                 <div
                   className="ce-gallery"
                   data-ce-columns="1"
-                  data-ce-images="1"
+                  data-ce-images={imagesToRender.length}
                 >
-                  {Object.values(safeRows).map((row, index) => {
-                    if (!row || !row.columns) return null;
-                    return (
-                      <React.Fragment key={index}>
-                        {mediaElement(Object.values(row.columns), safeBorder)}
-                      </React.Fragment>
-                    );
-                  })}
+                  {mediaElement(imagesToRender, safeBorder)}
                 </div>
               )}
               {bodytext && (
@@ -182,7 +218,7 @@ const Textmedia = ({
   };
 
   return (
-    <React.Fragment>{renderVideoElement(gallery, bodytext)}</React.Fragment>
+    <React.Fragment>{renderVideoElement(bodytext)}</React.Fragment>
   );
 };
 export default Textmedia;

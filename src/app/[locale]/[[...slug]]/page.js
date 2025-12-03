@@ -96,10 +96,6 @@ const getAllData = async (params, searchParams) => {
       }`
     );
   }
-  if (pageData && !pageData.error && pageData.data === 404) {
-    notFound();
-  }
-  
   return {
     pageData,
   };

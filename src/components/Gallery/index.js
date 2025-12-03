@@ -7,26 +7,82 @@ import FancyBox from "../Core/FancyBox";
 
 const Gallery = ({ data, spaceAfter }) => {
   // Extract image from multiple possible locations
-  let images = data?.image;
-  if (!images && data?.pi_flexform_content?.image) {
-    images = data.pi_flexform_content.image;
+  let images = data?.image || data?.pi_flexform_content?.image || data?.content?.image;
+  
+  // Normalize images to array of objects with path property
+  let normalizedImages = [];
+  if (images) {
+    if (Array.isArray(images)) {
+      normalizedImages = images.map(item => {
+        // If item is a string (path), convert to object
+        if (typeof item === "string") {
+          return { path: item };
+        }
+        // If item is an object, extract path
+        if (typeof item === "object" && item !== null) {
+          return {
+            path: item.path || item.publicUrl || item.url || item.originalUrl || "",
+            ...item
+          };
+        }
+        return null;
+      }).filter(Boolean);
+    } else if (typeof images === "string") {
+      // Single string path
+      normalizedImages = [{ path: images }];
+    } else if (typeof images === "object" && images !== null) {
+      // Single object
+      normalizedImages = [{
+        path: images.path || images.publicUrl || images.url || images.originalUrl || "",
+        ...images
+      }];
+    }
   }
   
-  // Ensure images is an array
-  if (!images) {
-    images = [];
-  } else if (!Array.isArray(images)) {
-    // If it's a single object, convert to array
-    images = [images];
-  }
-  
-  // Extract headline from multiple locations
-  const headline = data?.headline || data?.pi_flexform_content?.headline || "";
+  // Extract headline and imagePerRow from multiple locations
+  const headline = data?.headline || data?.pi_flexform_content?.headline || data?.content?.headline || "";
+  const imagePerRow = data?.imagePerRow || data?.pi_flexform_content?.imagePerRow || data?.content?.imagePerRow || "";
   
   // Validate we have images to render
-  if (!images || images.length === 0) {
+  if (!normalizedImages || normalizedImages.length === 0) {
     return null;
   }
+  
+  // Helper to construct full image URL
+  const getImageUrl = (imagePath) => {
+    if (!imagePath || imagePath.trim() === "") return "";
+    
+    // If already a full URL, return as is
+    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+      return imagePath;
+    }
+    
+    // Construct URL from base API URL
+    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/+$/, "");
+    const cleanPath = imagePath.replace(/^\/+/, "");
+    
+    // If path already starts with fileadmin, use it directly
+    if (cleanPath.startsWith("fileadmin/")) {
+      return `${baseUrl}/${cleanPath}`;
+    }
+    
+    // Otherwise, prepend fileadmin
+    return `${baseUrl}/fileadmin/${cleanPath}`;
+  };
+  
+  // Determine column classes
+  const getColClasses = () => {
+    if (imagePerRow) {
+      // imagePerRow might be "col-lg-3" or just "col-lg-3 col-md-4 col-sm-6"
+      if (imagePerRow.includes("col-")) {
+        return imagePerRow;
+      }
+    }
+    // Default: col-lg-3 col-md-4 col-sm-6
+    return "col-lg-3 col-md-4 col-sm-6";
+  };
+  
+  const colClasses = getColClasses();
   
   return (
     <div
@@ -44,56 +100,32 @@ const Gallery = ({ data, spaceAfter }) => {
           }}
         >
           <Row>
-            {images
-              .filter(item => item && (item.path || item.publicUrl || item.url))
+            {normalizedImages
+              .filter(item => item && item.path && item.path.trim() !== "")
               .map((item, index) => {
-              const imagePath = item.path || item.publicUrl || item.url || "";
-              const imageUrl = imagePath.startsWith("http") 
-                ? imagePath 
-                : `${process.env.NEXT_PUBLIC_API_URL}/fileadmin/${imagePath.replace(/^\/+/, "")}`;
+              const imageUrl = getImageUrl(item.path);
+              
+              if (!imageUrl) return null;
               
               return (
                 <Col
-                  sm={6}
-                  md={4}
                   key={index}
-                  className={`${data?.imagePerRow ? `${data.imagePerRow}` : ""}`}
+                  className={colClasses}
                 >
-                  {data?.imagePerRow ? (
-                    <>
-                      <figure>
-                        <SafeLink
-                          href={imageUrl}
-                          data-fancybox="gallery"
-                        >
-                          <LazyLoadImage
-                            effect="opacity"
-                            src={imageUrl}
-                            alt="Image thumb"
-                            width={"100%"}
-                            className="image-embed-item img-fluid"
-                          />
-                        </SafeLink>
-                      </figure>
-                    </>
-                  ) : (
-                    <>
-                      <figure>
-                        <SafeLink
-                          href={imageUrl}
-                          data-fancybox="gallery"
-                        >
-                          <LazyLoadImage
-                            effect="opacity"
-                            src={imageUrl}
-                            alt="Image thumb"
-                            width={"100%"}
-                            className="img-fluid"
-                          />
-                        </SafeLink>
-                      </figure>
-                    </>
-                  )}
+                  <figure>
+                    <SafeLink
+                      href={imageUrl}
+                      data-fancybox="gallery"
+                    >
+                      <LazyLoadImage
+                        effect="opacity"
+                        src={imageUrl}
+                        alt="Image thumb"
+                        width={"100%"}
+                        className="image-embed-item img-fluid"
+                      />
+                    </SafeLink>
+                  </figure>
                 </Col>
               );
             })}

@@ -9,16 +9,22 @@ const safeObject = (v) => (v && typeof v === "object" ? v : {});
        GALLERY NORMALIZER
 ==================================*/
 
-function normalizeGallery(gallery) {
+function normalizeGallery(gallery, positionData = null) {
   if (!gallery) {
     return {
-      position: { horizontal: "center", vertical: "above", noWrap: false },
+      position: positionData || { horizontal: "center", vertical: "above", noWrap: false },
       count: { files: 0, columns: 0, rows: 0 },
       rows: {},
     };
   }
 
-  if (gallery.rows) return gallery;
+  if (gallery.rows) {
+    // If gallery already has rows, preserve its position or use provided positionData
+    return {
+      ...gallery,
+      position: gallery.position || positionData || { horizontal: "center", vertical: "above", noWrap: false },
+    };
+  }
 
   if (Array.isArray(gallery)) {
     const rows = { "1": { columns: {} } };
@@ -33,7 +39,7 @@ function normalizeGallery(gallery) {
     });
 
     return {
-      position: { horizontal: "center", vertical: "above", noWrap: false },
+      position: positionData || { horizontal: "center", vertical: "above", noWrap: false },
       width: 570,
       count: { files: gallery.length, columns: gallery.length, rows: 1 },
       rows,
@@ -41,7 +47,7 @@ function normalizeGallery(gallery) {
   }
 
   return {
-    position: { horizontal: "center", vertical: "above", noWrap: false },
+    position: positionData || { horizontal: "center", vertical: "above", noWrap: false },
     count: { files: 0, columns: 0, rows: 0 },
     rows: {},
   };
@@ -202,7 +208,32 @@ function normalizeContentElement(el) {
   }
 
   if (out.content.gallery) {
-    out.content.gallery = normalizeGallery(out.content.gallery);
+    // Try to preserve position data if it exists in content or pi_flexform_content
+    // Position might be stored as:
+    // 1. content.position (object with horizontal/vertical/noWrap)
+    // 2. pi_flexform_content.position (object)
+    // 3. Separate fields: horizontal, vertical, noWrap in content or pi_flexform_content
+    let positionData = null;
+    
+    if (out.content.position && typeof out.content.position === "object") {
+      positionData = out.content.position;
+    } else if (out.content.pi_flexform_content?.position && typeof out.content.pi_flexform_content.position === "object") {
+      positionData = out.content.pi_flexform_content.position;
+    } else if (out.content.horizontal || out.content.vertical || out.content.noWrap !== undefined) {
+      positionData = {
+        horizontal: out.content.horizontal,
+        vertical: out.content.vertical,
+        noWrap: out.content.noWrap,
+      };
+    } else if (out.content.pi_flexform_content?.horizontal || out.content.pi_flexform_content?.vertical || out.content.pi_flexform_content?.noWrap !== undefined) {
+      positionData = {
+        horizontal: out.content.pi_flexform_content.horizontal,
+        vertical: out.content.pi_flexform_content.vertical,
+        noWrap: out.content.pi_flexform_content.noWrap,
+      };
+    }
+    
+    out.content.gallery = normalizeGallery(out.content.gallery, positionData);
   }
 
   return out;

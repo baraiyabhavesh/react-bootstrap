@@ -5,14 +5,16 @@ import React, { useContext, useState, useMemo } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import languages from "@/utils/languageConstant";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { i18n } from "../../../i18n-config";
 import Logo from "../Logo";
+import { normalizeLink } from "@/utils/normalizeLink";
 
 const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
   const router = useRouter();
+  const pathname = usePathname();
   let totalLanguages = [];
   const [toggleSearchForm, setToggleSearchForm] = useState(false);
   const [openCanvasMenu, setOpenCanvasMenu] = useState(false);
@@ -95,6 +97,41 @@ const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
     router.push(`/search?search_query=${searchTerm}`);
   };
 
+  const isMenuItemActive = (menuLink, menuChildren = []) => {
+    if (!pathname || !menuLink) return false;
+    
+    const normalizePath = (path) => {
+      if (!path) return "";
+      // Remove locale prefix if present
+      const pathWithoutLocale = path.replace(/^\/(en|de)(\/|$)/, "/");
+      // Remove trailing slash except for root
+      return pathWithoutLocale === "/" ? "/" : pathWithoutLocale.replace(/\/$/, "");
+    };
+    
+    const normalizedPathname = normalizePath(pathname);
+    const normalizedLink = normalizePath(menuLink);
+    
+    // For home page, only match exactly
+    if (normalizedLink === "/") {
+      return normalizedPathname === "/";
+    }
+    
+    // For other pages, check if pathname starts with the menu link
+    // But also check if any child is active (parent should be active if child is)
+    const isDirectMatch = normalizedPathname === normalizedLink;
+    const isChildActive = menuChildren.some(child => {
+      const childLink = child?.link || child?.container?.link;
+      if (!childLink) return false;
+      const normalizedChildLink = normalizePath(childLink);
+      return normalizedPathname === normalizedChildLink || 
+             (normalizedPathname.startsWith(normalizedChildLink + "/") && normalizedChildLink !== "/");
+    });
+    
+    return isDirectMatch || 
+           (normalizedPathname.startsWith(normalizedLink + "/") && normalizedLink !== "/") ||
+           isChildActive;
+  };
+
   const renderNavigator = () => {
     return (
       <>
@@ -124,6 +161,8 @@ const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
                       const shouldShowSubmenu = hasChildren || (hasSubpages && hasSubpages !== 0);
                       const shouldRenderChildren = hasChildren || (hasSubpages && hasSubpages !== 0);
                       
+                      // Determine if this menu item is active based on current pathname
+                      const isActive = isMenuItemActive(link, childrenArray);
                         
                       return (
                           <React.Fragment key={title + index}>
@@ -134,7 +173,7 @@ const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
                                     ? "active slide--up"
                                     : ""
                                 } ${data?.megaMenu ? "dropdown-mega" : ""} ${
-                                  active ? "active" : ""
+                                  isActive ? "active" : ""
                                 }`}
                               >
                                 <SafeLink href={typeof link === "string" ? link : (link || "#")}>{title}</SafeLink>
@@ -216,6 +255,7 @@ const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
                                         const { title: childTitle, children: childChildren, link: childLink, hasSubpages: childHasSubpages, active: childActive } = child;
                                         
                                         const childChildrenArray = Array.isArray(childChildren) ? childChildren : [];
+                                        const isChildActive = isMenuItemActive(childLink, childChildrenArray);
                                         
                                         return (
                                           <React.Fragment
@@ -227,7 +267,7 @@ const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
                                                   activeInnerMenus === childTitle
                                                     ? "active slide--up"
                                                     : ""
-                                                } ${childActive ? "active" : ""}`}
+                                                } ${isChildActive ? "active" : ""}`}
                                               >
                                                 <SafeLink href={typeof childLink === "string" ? childLink : (childLink || "#")}>{childTitle}</SafeLink>
                                                 <ul>
@@ -246,11 +286,12 @@ const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
                                                         };
                                                       }
                                                       const { title: innerTitle, link: innerLink, active: innerActive } = innerChild;
+                                                      const isInnerActive = isMenuItemActive(innerLink);
                                                       
                                                       return (
                                                         <li
                                                           className={`${
-                                                            innerActive
+                                                            isInnerActive
                                                               ? "active"
                                                               : ""
                                                           }`}
@@ -285,7 +326,7 @@ const Header = ({ lang, currentPageHeaderLayout, websiteType }) => {
                                             ) : (
                                               <li
                                                 className={`${
-                                                  childActive === 1 || childActive === true ? "active" : ""
+                                                  isChildActive ? "active" : ""
                                                 }`}
                                               >
                                                 <SafeLink href={typeof childLink === "string" ? childLink : (childLink || "#")}>{childTitle}</SafeLink>

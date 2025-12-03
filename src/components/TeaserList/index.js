@@ -11,58 +11,95 @@ const TeaserList = ({ data }) => {
     const Icon = FontAwesome[iconName];
     return Icon ? <Icon /> : null;
   }
+  const icon = data?.icon || data?.pi_flexform_content?.icon;
+  const imageUrl = getImageUrlFromData(data?.image || data?.pi_flexform_content?.image);
+  const headline = data?.headline || data?.pi_flexform_content?.headline;
+  const teasertext = data?.teasertext || data?.pi_flexform_content?.teasertext;
+
   return (
     <div className="content-section frame ">
       <div className="teaser-block">
-        {data.cardicon === "1" ? (
+        {icon ? (
           <div className="teaser-icon">
-            {data.icon && <IconComponent iconName={data?.icon} />}
+            <IconComponent iconName={icon} />
           </div>
         ) : (
           <>
-            {(() => {
-              const imageUrl = getImageUrlFromData(data.image);
-              // Only render image if we have a valid URL (not null, not empty)
-              if (imageUrl && imageUrl.trim() !== "") {
-                return (
-                  <LazyLoadImage
-                    effect="opacity"
-                    src={imageUrl}
-                    className="image-embed-item"
-                  />
-                );
-              }
-              return null;
-            })()}
+            {imageUrl && imageUrl.trim() !== "" ? (
+              <LazyLoadImage
+                effect="opacity"
+                src={imageUrl}
+                className="image-embed-item"
+              />
+            ) : null}
           </>
         )}
-        <h3>{data.headline}</h3>
-        <p>{data.teasertext}</p>
-        {data.buttonlabel && data.buttonlabel !== "" && (
-          <div className="btn-group">
-            <SafeLink
-              href={data.buttonlink || "#"}
-              className={`btn btn-outline-primary ${
-                !data.buttonlink || data.buttonlink === "" ? "disabled" : ""
-              }`}
-            >
-              {data.buttonlabel}
-            </SafeLink>
-          </div>
-        )}
-
-        {data.btnlabel && data.btnlabel !== "" && (
-          <div className="btn-group">
-            <SafeLink
-              href={data.btnlink || "#"}
-              className={`btn btn-outline-primary ${
-                !data.btnlink || data.btnlink === "" ? "disabled" : ""
-              }`}
-            >
-              {data.btnlabel}
-            </SafeLink>
-          </div>
-        )}
+        <h3>{headline}</h3>
+        <p>{teasertext}</p>
+        {(() => {
+          const buttonsgroup = data?.buttonsgroup || data?.pi_flexform_content?.buttonsgroup;
+          if (buttonsgroup && typeof buttonsgroup === 'object') {
+            const buttons = Object.values(buttonsgroup)
+              .map((button, index) => {
+                const buttonData = button?.container || button;
+                const buttonlabel = buttonData?.buttonlabel;
+                const buttonlink = buttonData?.buttonlink;
+                
+                if (buttonlabel && buttonlink) {
+                  return (
+                    <div key={index} className="btn-group">
+                      <SafeLink
+                        href={buttonlink || "#"}
+                        className={`btn btn-outline-primary ${
+                          !buttonlink || buttonlink === "" ? "disabled" : ""
+                        }`}
+                      >
+                        {buttonlabel}
+                      </SafeLink>
+                    </div>
+                  );
+                }
+                return null;
+              })
+              .filter(Boolean);
+            
+            return buttons.length > 0 ? <>{buttons}</> : null;
+          }
+          
+          const buttonlabel = data?.buttonlabel || data?.pi_flexform_content?.buttonlabel;
+          const buttonlink = data?.buttonlink || data?.pi_flexform_content?.buttonlink;
+          const btnlabel = data?.btnlabel || data?.pi_flexform_content?.btnlabel;
+          const btnlink = data?.btnlink || data?.pi_flexform_content?.btnlink;
+          
+          return (
+            <>
+              {buttonlabel && buttonlabel !== "" && (
+                <div className="btn-group">
+                  <SafeLink
+                    href={buttonlink || "#"}
+                    className={`btn btn-outline-primary ${
+                      !buttonlink || buttonlink === "" ? "disabled" : ""
+                    }`}
+                  >
+                    {buttonlabel}
+                  </SafeLink>
+                </div>
+              )}
+              {btnlabel && btnlabel !== "" && (
+                <div className="btn-group">
+                  <SafeLink
+                    href={btnlink || "#"}
+                    className={`btn btn-outline-primary ${
+                      !btnlink || btnlink === "" ? "disabled" : ""
+                    }`}
+                  >
+                    {btnlabel}
+                  </SafeLink>
+                </div>
+              )}
+            </>
+          );
+        })()}
       </div>
     </div>
   );
